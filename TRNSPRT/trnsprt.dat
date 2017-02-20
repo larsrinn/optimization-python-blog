@@ -1,0 +1,22 @@
+set plants := seattle san-diego;
+set markets := new-york chicago topeka;
+
+param capacity_plant :=
+seattle 350
+san-diego 600;
+
+param demand_market :=
+new-york 325
+chicago 300
+topeka 275;
+
+param distance_in_thousand_miles :=
+seattle new-york 2.5
+seattle chicago 1.7
+seattle topeka 1.8
+san-diego new-york 2.5
+san-diego chicago 1.8
+san-diego topeka 1.4;
+
+
+param freight_costs_per_case_and_thousand_miles := 90;
