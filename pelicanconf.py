@@ -35,5 +35,5 @@ DEFAULT_PAGINATION = 10
 #RELATIVE_URLS = True
 
 MARKUP = ('md', 'ipynb')
-PLUGIN_PATH = './plugins'
+PLUGIN_PATH = ['./plugins']
 PLUGINS = ['ipynb.markup']
