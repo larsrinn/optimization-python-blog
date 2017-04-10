@@ -1,8 +1,8 @@
 set time := 1 2 3 4;
 
 param maximum_power := 22;
-param minimum_energy := 3;
-param maximum_energy := 5;
+param minimum_energy := 15;
+param maximum_energy := 20;
 
 param electricity_price :=
 1 20

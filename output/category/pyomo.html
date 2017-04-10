@@ -21,17 +21,17 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/trnsprt-abstract.html">Rewriting the transport model in an abstract version</a></h1>
+                    <h1 class="entry-title"><a href="/glpk-pyomo-install.html">How to install GLPK and Pyomo on Windows</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2017-03-03T12:24:00+01:00">
-                Published: Fr 03 März 2017
+        <abbr class="published" title="2017-03-15T08:47:00+01:00">
+                Published: Mi 15 März 2017
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="/author/lars-manuel-rinn.html">Lars Manuel Rinn</a>
         </address>
 <p>In <a href="/category/pyomo.html">Pyomo</a>.</p>
-<p>tags: <a href="/tag/pyomo.html">pyomo</a> </p>
+<p>tags: <a href="/tag/pyomo.html">pyomo</a> <a href="/tag/glpk.html">glpk</a> </p>
 </footer><!-- /.post-info --><style type="text/css">/*!
 *
 * IPython notebook
@@ -1010,16 +1010,18 @@ h6:hover .anchor-link {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="ToDo">ToDo<a class="anchor-link" href="#ToDo">¶</a></h1><ul>
-<li>Referencing the original model</li>
-<li>Link einfügen (see below)</li>
-<li>Different approaches to create_instance => at least mention</li>
+<li>Link einfügen zum Skript zum Überprüfen ob Installation erfolgreich war</li>
 </ul>
-<h1 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">¶</a></h1><p>The Pyomo-Documentation contains a <a href="https://github.com/Pyomo/PyomoGallery/wiki">gallery</a>, where the most popular introduction model to <a href="http://www.gams.com/">GAMS</a> is rewritten using the Pyomo-package: <a href="http://nbviewer.jupyter.org/github/Pyomo/PyomoGallery/blob/master/transport/transport.ipynb">TRNSPRT</a>.</p>
-<p>However, in the pyomo gallery the model is created as a concrete model. This means, all sets and parameters need to be defined in the model file. For most practical applications it is desirable to create an abstract model that can be initialized with varying data, in order to use the model for more purposes. I'm going to show how to create the transport model as an abstract model, initialize it with the data of the standard example and solve the problem. I suggest you look through the example in the pyomo gallery before reading this post, because I won't repeat the explanation of some interesting details.</p>
-<h1 id="The-transport-model">The transport model<a class="anchor-link" href="#The-transport-model">¶</a></h1><p>The transport model is an optimization of the transport costs of one good. Production capacities of the plants must not be exceeded, while the demand at the markets must be met. The transport costs are linear with respect to the freight and the distance between a plant and a market. For a description of the transport model using mathematical terms see the example in the <a href="http://nbviewer.jupyter.org/github/Pyomo/PyomoGallery/blob/master/transport/transport.ipynb">pyomo gallery</a>.</p>
-<p>In the original description of the model, as well as in the replication in the pyomo gallery, simple characters are used as designators for sets, parameters and variables. While this might the mathematical convention, I'm going to deviate from that approach and use descriptive names.</p>
-<h1 id="Implementation-of-the-abstract-model">Implementation of the abstract model<a class="anchor-link" href="#Implementation-of-the-abstract-model">¶</a></h1><p>The examples in the Pyomo gallery always import everything from <code>pyomo.environ</code>. In this blog, I'll only import the objects, that are actually needed. Firstly it is a better programming habit, since it reduces the risk of namespace collisions. But also, the scripts for model generation run faster. For the application to real world problems the importing time will be neglible compared to the model generation and solving time. But for simple problems it actually makes a difference.</p>
-<p>In contrast to the example in the pyomo gallery, the model must be an object of the class <code>ConcreteModel</code>.</p>
+<h1 id="How-to-install-GLPK-and-use-it-with-Pyomo-on-Windows">How to install GLPK and use it with Pyomo on Windows<a class="anchor-link" href="#How-to-install-GLPK-and-use-it-with-Pyomo-on-Windows">¶</a></h1><p>The GNU project offers the <a href="https://www.gnu.org/software/glpk/">GNU Linear Programming Toolkit (GLPK)</a>. It is a package intended to solve linear and mixed integer optimization problems. Compared to state-of-the-art proprieatary solvers like Gurobi or CPLEX the GLPK solver is <a href="http://prod.sandia.gov/techlib/access-control.cgi/2013/138847.pdf">very slow</a>. Performance increases in the order of 100 are possible when using a commercial solver. However, it integrates well with Pyomo and since it is free and open source, it is a greate possibility to solve "small" problems without having the need to spent thousands of euros for commercial licenses. By the way, if you're an academic user, you can get a <a href="http://www.gurobi.com/academia/for-universities">free version</a> of Gurobi.</p>
+<p>As GLPK is released under the GNU project, it is very "unix-focused". While it also <a href="http://winglpk.sourceforge.net/">runs on windows</a>, installation is neither self-explanatory nor well documented. This is why I wrote this blog post.</p>
+<h2 id="Installation-of-GLPK">Installation of GLPK<a class="anchor-link" href="#Installation-of-GLPK">¶</a></h2><p>The binaries to run on Windows can be found <a href="https://sourceforge.net/projects/winglpk/">here</a>. Simply download the latest zip-file. The zip-file contains the binaries for 32- and 64-bit-systems in the folders <code>w32</code> and <code>w64</code>. The remaining files and folders are not required, if you only want to use the GLPK solver for Pyomo.</p>
+<h3 id="Copy-the-library-files">Copy the library files<a class="anchor-link" href="#Copy-the-library-files">¶</a></h3><p>The official GLPK installation documentation states, that you need to copy the content of the <code>w32</code> or <code>w64</code> folder to your system %PATH%. They suggest that you use the <code>%SystemRoot%\system32</code> folder (most likely this will be <code>c:\windows\system32</code>) as a target.</p>
+<h3 id="Alternative:-Add-the-folder-to-the-path-variable">Alternative: Add the folder to the path variable<a class="anchor-link" href="#Alternative:-Add-the-folder-to-the-path-variable">¶</a></h3><p>If you don't want to copy files to the <code>%SystemRoot%\system32</code> folder or don't have the permissions to do so, you can also copy the files to an arbitrary folder and add that one to the <code>PATH</code> environment variable. You can find instructions on how do to that <a href="https://superuser.com/questions/949560/how-do-i-set-system-environment-variables-in-windows-10">here (for Windows 10)</a> or <a href="http://stackoverflow.com/questions/23400030/windows-7-add-path">here (for Windows 7, follow the instructions by the user Bird)</a>. Make sure, that you add to the system variables. And also ensure that the folder is added to the path permanently (hence, not using the <code>set</code> command from the command line)</p>
+<h3 id="Reboot-your-PC">Reboot your PC<a class="anchor-link" href="#Reboot-your-PC">¶</a></h3><p>Unfortunately I couldn't find a solution that avoids rebooting your PC. You need to do that in order for Windows to rescan the dll-files of the folders listed in your PATH environment variable. If somebody has a solution, please leave me a comment.</p>
+<h2 id="Installation-of-Pyomo">Installation of Pyomo<a class="anchor-link" href="#Installation-of-Pyomo">¶</a></h2><p>Pyomo can be simply installed like any other Python package available on <a href="https://pypi.python.org/pypi">PyPI</a>. Simply type</p>
+<pre><code>pip install pyomo</code></pre>
+<p>to the command line of your choice (I use and recommend the git bash you get for free when installing <a href="https://git-scm.com/download/win">git on Windows</a> (which you should most definitely do)). The full installation documentation for Pyomo can be found <a href="http://www.pyomo.org/installation">here</a></p>
+<h2 id="Check-for-successful-installation">Check for successful installation<a class="anchor-link" href="#Check-for-successful-installation">¶</a></h2><p>I wrote a small (actually non-sense) pyomo model that is being solved by GLPK. You can download it here. Simply run it from the command line and it will tell you, whether pyomo and GLPK are installed and working together successfully.</p>
 </div>
 </div>
 </div>
@@ -1028,216 +1030,7 @@ h6:hover .anchor-link {
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyomo.environ</span> <span class="k">import</span> <span class="n">AbstractModel</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Param</span><span class="p">,</span> <span class="n">Var</span><span class="p">,</span> <span class="n">Constraint</span><span class="p">,</span> <span class="n">Objective</span><span class="p">,</span> <span class="n">minimize</span>
- 
-<span class="n">model</span> <span class="o">=</span> <span class="n">AbstractModel</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Sets, parameters, variables and constraints are defined using the same classes as for the concrete model. The only difference is, that the <code>initialize</code> parameter is left to be <code>None</code>. Even though I use descriptive names, I keep the <code>doc</code> parameter for model debugging purposes.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Set-definitions">Set definitions<a class="anchor-link" href="#Set-definitions">¶</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [2]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">plants</span> <span class="o">=</span> <span class="n">Set</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="s2">"Canning plants"</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">markets</span> <span class="o">=</span> <span class="n">Set</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="s2">"Markets"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Parameter-definitions">Parameter definitions<a class="anchor-link" href="#Parameter-definitions">¶</a></h2><p>You can observe that using descriptive names will increase line length to a level where lines cannot be displayed in one line on standard environments. However, I value code readibility over fitting one line of commands in one actual line.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [3]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">capacity_plant</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">plants</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s1">'Capacity of a plant in cases'</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">demand_market</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">markets</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s1">'Demand of a market in cases'</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">distance_in_thousand_miles</span> <span class="o">=</span> \
-    <span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">plants</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">markets</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s1">'Distance between plant and marekt in thousands of miles'</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">freight_costs_per_case_and_thousand_miles</span> <span class="o">=</span> \
-    <span class="n">Param</span><span class="p">(</span><span class="n">initialize</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s1">'Freight in dollars per case per thousand miles'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Interestingly, you can still use the <code>initialize</code> parameter when adding parameters (the same holds true for sets/variables/constraints) to an abstract model. The function <code>freight_costs_per_case_in_thousands</code> is only invoked during the initialization of the concrete instance (see below). Therefore it can take the sets <code>model.plants</code> and <code>model.markets</code> as input, even though they are not yet initialized when the parameter <code>model.freight_costs_per_case_in_thousands</code> is defined.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [4]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">freight_costs_per_case_in_thousands</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">plant</span><span class="p">,</span> <span class="n">market</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">freight_costs_per_case_and_thousand_miles</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">distance_in_thousand_miles</span><span class="p">[</span><span class="n">plant</span><span class="p">,</span><span class="n">market</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">freight_costs_per_case_in_thousands</span> <span class="o">=</span> <span class="n">Param</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">plants</span><span class="p">,</span> 
-                                                  <span class="n">model</span><span class="o">.</span><span class="n">markets</span><span class="p">,</span> 
-                                                  <span class="n">initialize</span><span class="o">=</span><span class="n">freight_costs_per_case_in_thousands</span><span class="p">,</span> 
-                                                  <span class="n">doc</span><span class="o">=</span><span class="s1">'Transport cost in thousands of dollar per case'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Variable-definitions">Variable definitions<a class="anchor-link" href="#Variable-definitions">¶</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [5]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">shipment_quantities_in_cases</span> <span class="o">=</span> <span class="n">Var</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">plants</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">markets</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">doc</span><span class="o">=</span><span class="s1">'Shipment quantities in case'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Constraints">Constraints<a class="anchor-link" href="#Constraints">¶</a></h2><p>Looking at list comprehensions, you can see how using descriptive names strongly enhances code readibility. When looking at lines like <code>sum(model.x[i,j] for j in model.j) <= model.a[i]</code>, I always have to look up the nomenclature. The code below, I can simply read and immediately understand what the constraint is doing. But I see how this is a matter of personal taste.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [6]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">supply_rule</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">plant</span><span class="p">):</span>
-  <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">shipment_quantities_in_cases</span><span class="p">[</span><span class="n">plant</span><span class="p">,</span><span class="n">market</span><span class="p">]</span> <span class="k">for</span> <span class="n">market</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">markets</span><span class="p">)</span> \
-            <span class="o"><=</span> <span class="n">model</span><span class="o">.</span><span class="n">capacity_plant</span><span class="p">[</span><span class="n">plant</span><span class="p">]</span>
-
-<span class="k">def</span> <span class="nf">demand_rule</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">market</span><span class="p">):</span>
-  <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">shipment_quantities_in_cases</span><span class="p">[</span><span class="n">plant</span><span class="p">,</span> <span class="n">market</span><span class="p">]</span> <span class="k">for</span> <span class="n">plant</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">plants</span><span class="p">)</span> \
-            <span class="o">>=</span> <span class="n">model</span><span class="o">.</span><span class="n">demand_market</span><span class="p">[</span><span class="n">market</span><span class="p">]</span> 
-
-<span class="n">model</span><span class="o">.</span><span class="n">supply_constraint</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">plants</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">supply_rule</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s1">'Limit supply limit at each plant'</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">demand_constraint</span> <span class="o">=</span> <span class="n">Constraint</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">markets</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">demand_rule</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s1">'Satisfy demand at each market'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Objective">Objective<a class="anchor-link" href="#Objective">¶</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [7]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">objective_rule</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-  <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">freight_costs_per_case_in_thousands</span><span class="p">[</span><span class="n">plant</span><span class="p">,</span><span class="n">market</span><span class="p">]</span> <span class="o">*</span>
-             <span class="n">model</span><span class="o">.</span><span class="n">shipment_quantities_in_cases</span><span class="p">[</span><span class="n">plant</span><span class="p">,</span><span class="n">market</span><span class="p">]</span> 
-                 <span class="k">for</span> <span class="n">plant</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">plants</span> <span class="k">for</span> <span class="n">market</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">markets</span><span class="p">)</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">objective</span> <span class="o">=</span> <span class="n">Objective</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">objective_rule</span><span class="p">,</span> <span class="n">sense</span><span class="o">=</span><span class="n">minimize</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s1">'Define objective function'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Create-a-concrete-instance-of-the-abstract-model">Create a concrete instance of the abstract model<a class="anchor-link" href="#Create-a-concrete-instance-of-the-abstract-model">¶</a></h1><p>Up to now, the definition of the model didn't include any concrete data. To create an actual instance of the abstract model, you can simply call the function <code>create_instance()</code> on the abstract model's instance. It takes a file as input, that contains the data for solving the model in the <a href="http://www.ampl.com/BOOK/CHAPTERS/12-data.pdf">AMPL format</a>.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [8]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">create_instance</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">'data/trnsprt/trnsprt.dat'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>For practical applications, you might want to create the abstract model in an own <code>.py</code> file and import the model to a script you use to initialize an instance, run that instance and do the post-processing. I'll create a post on how to do that soon.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Running-the-instance">Running the instance<a class="anchor-link" href="#Running-the-instance">¶</a></h1><p>You can call the solve function of your <code>SolverFactory</code> instance on an abstract model's instance the same way as for a <code>ConcreteModel</code> instance.</p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [9]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyomo.opt</span> <span class="k">import</span> <span class="n">SolverFactory</span>
-<span class="n">opt</span> <span class="o">=</span> <span class="n">SolverFactory</span><span class="p">(</span><span class="s2">"glpk"</span><span class="p">)</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
-<span class="n">results</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>python glpk_install/glpk_installed.py
 </pre></div>
 </div>
 </div>
@@ -1246,39 +1039,7 @@ h6:hover .anchor-link {
 <div class="output">
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre># ==========================================================
-# = Solver Results                                         =
-# ==========================================================
-# ----------------------------------------------------------
-#   Problem Information
-# ----------------------------------------------------------
-Problem: 
-- Name: unknown
-  Lower bound: 153.675
-  Upper bound: 153.675
-  Number of objectives: 1
-  Number of constraints: 6
-  Number of variables: 7
-  Number of nonzeros: 13
-  Sense: minimize
-# ----------------------------------------------------------
-#   Solver Information
-# ----------------------------------------------------------
-Solver: 
-- Status: ok
-  Termination condition: optimal
-  Statistics: 
-    Branch and bound: 
-      Number of bounded subproblems: 0
-      Number of created subproblems: 0
-  Error rc: 0
-  Time: 0.016516447067260742
-# ----------------------------------------------------------
-#   Solution Information
-# ----------------------------------------------------------
-Solution: 
-- number of solutions: 0
-  number of solutions displayed: 0
+<pre>GLPK successfully installed
 </pre>
 </div>
 </div>
@@ -1290,43 +1051,8 @@ Solution:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Retrieving-the-output">Retrieving the output<a class="anchor-link" href="#Retrieving-the-output">¶</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [10]:</div>
-<div class="inner_cell">
-<div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">pyomo_postprocess</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-  <span class="n">instance</span><span class="o">.</span><span class="n">shipment_quantities_in_cases</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Displaying Solution</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s1">'-'</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
-<span class="n">pyomo_postprocess</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="output_wrapper">
-<div class="output">
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-Displaying Solution
-------------------------------------------------------------
-shipment_quantities_in_cases : Shipment quantities in case
-    Size=6, Index=shipment_quantities_in_cases_index
-    Key                       : Lower : Value : Upper : Fixed : Stale : Domain
-     ('san-diego', 'chicago') :     0 :   0.0 :  None : False : False :  Reals
-    ('san-diego', 'new-york') :     0 : 325.0 :  None : False : False :  Reals
-      ('san-diego', 'topeka') :     0 : 275.0 :  None : False : False :  Reals
-       ('seattle', 'chicago') :     0 : 300.0 :  None : False : False :  Reals
-      ('seattle', 'new-york') :     0 :   0.0 :  None : False : False :  Reals
-        ('seattle', 'topeka') :     0 :   0.0 :  None : False : False :  Reals
-</pre>
-</div>
-</div>
+<p>Congratulations, you successfully installed Pyomo and GLPK on your PC. Now you should be able to follow along the examples on this post and write your own, simple optimization problems.</p>
+<h1 id="Encountered-errors">Encountered errors<a class="anchor-link" href="#Encountered-errors">¶</a></h1><p>If you encountered any errors and are not able to install GLPK and pyomo, leave me a comment. I'll be happy to help</p>
 </div>
 </div>
 </div>
@@ -1359,6 +1085,45 @@ shipment_quantities_in_cases : Shipment quantities in case
 </script>
                 </article>
             </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/trnsprt-abstract.html" rel="bookmark"
+                           title="Permalink to Rewriting the transport model in an abstract version">Rewriting the transport model in an abstract version</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2017-03-03T12:24:00+01:00">
+                Published: Fr 03 März 2017
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/lars-manuel-rinn.html">Lars Manuel Rinn</a>
+        </address>
+<p>In <a href="/category/pyomo.html">Pyomo</a>.</p>
+<p>tags: <a href="/tag/pyomo.html">pyomo</a> </p>
+</footer><!-- /.post-info -->                
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="ToDo">ToDo<a class="anchor-link" href="#ToDo">¶</a></h1><ul>
+<li>Link einfügen (see below)</li>
+<li>Different approaches to create_instance => at least mention</li>
+</ul>
+<h1 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">¶</a></h1><p>The Pyomo-Documentation contains a <a href="https://github.com/Pyomo/PyomoGallery/wiki">gallery</a>, where the most popular introduction model to <a href="http://www.gams.com/">GAMS</a> is rewritten using the Pyomo-package: <a href="http://nbviewer.jupyter.org/github/Pyomo/PyomoGallery/blob/master/transport/transport.ipynb">TRNSPRT</a>.</p>
+<p>However, in the pyomo gallery the model is created as a concrete model. This means, all sets and parameters need to be defined in the model file. For most practical applications it is desirable to create an abstract model that can be initialized with varying data, in order to use the model for more purposes. I'm going to show how to create the transport model as an abstract model, initialize it with the data of the standard example and solve the problem. I suggest you look through the example in the pyomo gallery before reading this post, because I won't repeat the explanation of some interesting details.</p>
+                <a class="readmore" href="/trnsprt-abstract.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
